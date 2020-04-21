@@ -11,7 +11,7 @@ The COVID-19 open research dataset (CORD-19) have been prepared by the White Hou
 First of all, let's download the data. The COVID-19 open research dataset provided by Kaggle contains several data sources, such as the meta data file, and several research papers. Here I chose to download the meta data file which contains the basic information such as titles, abstracts, authors of the research articles.
 
 
-```
+```python
 import os
 
 # Create data folder
@@ -50,7 +50,7 @@ os.chdir('data')
 Considering that the abstract part of a research paper provides a brief summary of the research topic, therefore, here the abstracts from all the research papers are extracted as corpus.
 
 
-```
+```python
 import csv
 
 corpus = []
@@ -87,7 +87,7 @@ for i in range(5):
 Before working on the corpus, we need to preprocess the data by converting all the words to lower case, and also remove non-alphabet characters, such as punctuation marks.
 
 
-```
+```python
 import re
 
 # Convert to lower case
@@ -113,7 +113,7 @@ for i in range(5):
 Stop words, such as "because", "so", etc. in English, are defined as the commonly used words in any language, which are usually eliminated during natural language processing and text mining, in order to focus on the more important words. Based on my finding, the COVID-19 open research dataset contains research articles not only in English, but also in other European languages as well, such as Spanish and French. Therefore, we shall also consider precluding the interference from the stop words in the languages other than English.
 
 
-```
+```python
 import nltk
 
 nltk.download('stopwords')
@@ -156,7 +156,7 @@ Then, the statistical calculation involves the product of "TF" and "IDF".
 $TF-IDF = TF \times IDF$
 
 
-```
+```python
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 
@@ -1134,7 +1134,7 @@ terms_df.sort_index().head(10)
 Then, let's try to visualize the TF-IDF scores of each term in the COVID-19 open research dataset.
 
 
-```
+```python
 import matplotlib.pyplot as plt
 
 # Visualize TF-IDF scores of each term
@@ -1172,7 +1172,7 @@ $A=u_1\sigma_1v_1^T+u_2\sigma_2v_2^T+...+u_n\sigma_nv_n^T$
 Since $\sigma_1 > \sigma_2 > ... > \sigma_n$, therefore, we will find the top 10 topics by truncating the first 10 singular values in the formula above ($u_1\sigma_1v_1^T+u_2\sigma_2v_2^T+...+u_{10}\sigma_{10}v_{10}^T$).
 
 
-```
+```python
 from sklearn.decomposition import TruncatedSVD
 
 # SVD represent documents and terms in vectors
@@ -1189,7 +1189,7 @@ print('Total topics: {}'.format(len(components)))
 Then, let's print out the topics.
 
 
-```
+```python
 # Show the topics
 for i, component in enumerate(components):
     terms_component = zip(terms, component)
@@ -1244,7 +1244,7 @@ Nevertheless, **hierarchical softmax**, by using a huffman tree, significantly a
 Considering that Tensorflow has not yet provided hierarchical softmax function in its package, I switched to use Gensim library to train Word2vec model.
 
 
-```
+```python
 from gensim.models.word2vec import Word2Vec
 import nltk
 import logging
@@ -1396,7 +1396,7 @@ w2v_model = Word2Vec(tokenized_corpus,
 Then, let's find some similar words.
 
 
-```
+```python
 search_terms = ['protein', 'h5n1', 'health', 'public', 'china', 'drug']
 similar_words_dict = {}
 for search_term in search_terms:
@@ -1427,7 +1427,7 @@ for search_term in search_terms:
 Last but not least, let's create diagram of word embeddings in COVID-19 open research dataset.
 
 
-```
+```python
 from sklearn.manifold import TSNE
 import numpy as np
 
